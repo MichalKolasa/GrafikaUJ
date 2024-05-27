@@ -123,11 +123,11 @@ const Cube = function () {
         0.5, 1.0, 0.0,
     ]
 
-    const position = 1.0;
+    const size = 0.4;
 
     const boxVertBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boxVertBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generateCube(position)), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generateCube([0,0,6], size)), gl.STATIC_DRAW);
 
     const boxIndicesBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, boxIndicesBuffer);
@@ -216,47 +216,48 @@ function checkLink(gl, program) {
     }
 }
 
-function generateCube (position) {
+function generateCube (position, size) {
 
-    const x = position;
+    const halfSize = size / 2;
+    const [x,y,z] = position;
 
     let boxVertices = 
 	[ // X, Y, Z         
 		// Top
-		-position, position, -position,    
-		-position, position, position,     
-		position, position, position,      
-		position, position, -position,     
+		-halfSize, halfSize, -halfSize,    
+		-halfSize, halfSize, halfSize,     
+		halfSize, halfSize, halfSize,      
+		halfSize, halfSize, -halfSize,     
 
 		// Left
-		-position, position, position,     
-		-position, -position, position,    
-		-position, -position, -position,   
-		-position, position, -position,    
+		-halfSize, halfSize, halfSize,     
+		-halfSize, -halfSize, halfSize,    
+		-halfSize, -halfSize, -halfSize,   
+		-halfSize, halfSize, -halfSize,    
 
 		// Right
-		position, position, position,      
-		position, -position, position,     
-		position, -position, -position,    
-		position, position, -position,     
+		halfSize, halfSize, halfSize,      
+		halfSize, -halfSize, halfSize,     
+		halfSize, -halfSize, -halfSize,    
+		halfSize, halfSize, -halfSize,     
 
 		// Front
-		position, position, position,      
-		position, -position, position,     
-		-position, -position, position,    
-		-position, position, position,     
+		halfSize, halfSize, halfSize,      
+		halfSize, -halfSize, halfSize,     
+		-halfSize, -halfSize, halfSize,    
+		-halfSize, halfSize, halfSize,     
 
 		// Back
-		position, position, -position,     
-		position, -position, -position,    
-		-position, -position, -position,   
-		-position, position, -position,    
+		halfSize, halfSize, -halfSize,     
+		halfSize, -halfSize, -halfSize,    
+		-halfSize, -halfSize, -halfSize,   
+		-halfSize, halfSize, -halfSize,    
 
 		// Bottom
-		-position, -position, -position,   
-		-position, -position, position,    
-		position, -position, position,     
-		position, -position, -position,    
+		-halfSize, -halfSize, -halfSize,   
+		-halfSize, -halfSize, halfSize,    
+		halfSize, -halfSize, halfSize,     
+		halfSize, -halfSize, -halfSize,    
 	];
 
     return boxVertices;
