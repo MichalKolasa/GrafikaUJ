@@ -124,9 +124,10 @@ const Cube = function () {
         0.5, 1.0, 0.0,
     ]
 
-    const size = 1.0;
+    // Przekazanie argumentów do funkcji zmnieniającej rozmiar i przesunięcie sześcianu.
+    const size = 0.5;
     const position = [1.0, 1.0, 1.0];
-    
+
     const boxVertBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boxVertBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generateCube(position, size)), gl.STATIC_DRAW);
