@@ -25,6 +25,7 @@ const fragmentShaderTxt = `
     }
 `
 const mat4 = glMatrix.mat4;
+const vec3 = glMatrix.vec3;
 
 const Cube = function () {
     const canvas = document.getElementById('main-canvas');
@@ -123,11 +124,12 @@ const Cube = function () {
         0.5, 1.0, 0.0,
     ]
 
-    const size = 0.4;
-
+    const size = 1.0;
+    const position = [1.0, 1.0, 1.0];
+    
     const boxVertBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boxVertBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generateCube([0,0,6], size)), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generateCube(position, size)), gl.STATIC_DRAW);
 
     const boxIndicesBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, boxIndicesBuffer);
@@ -219,7 +221,7 @@ function checkLink(gl, program) {
 function generateCube (position, size) {
 
     const halfSize = size / 2;
-    const [x,y,z] = position;
+    let [x,y,z] = position;
 
     let boxVertices = 
 	[ // X, Y, Z         
@@ -259,6 +261,17 @@ function generateCube (position, size) {
 		halfSize, -halfSize, halfSize,     
 		halfSize, -halfSize, -halfSize,    
 	];
+
+    let matTranslation = mat4.create();
+    mat4.translate(matTranslation, matTranslation, vec3.fromValues(x, y, z));
+
+    for (let i = 0; i < boxVertices.length; i += 3) {
+        let vertex = vec3.fromValues(boxVertices[i], boxVertices[i+1], boxVertices[i+2]);
+        vec3.transformMat4(vertex, vertex, matTranslation);
+        boxVertices[i] = vertex[0];
+        boxVertices[i+1] = vertex[1];
+        boxVertices[i+2] = vertex[2];
+    }
 
     return boxVertices;
 }
